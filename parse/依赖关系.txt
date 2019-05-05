@@ -1,0 +1,105 @@
+adlist		zmalloc
+ae		zmalloc config
+ae_epoll	NULL
+ae_evport	NULL
+ae_kqueue	NULL
+ae_select	NULL
+anet		fmacros
+aof		server bio rio
+asciilogo	NULL
+atomicvar	NULL
+bio		server
+bitops		server
+blocked		server
+childinfo	server
+cluster		server endianconv
+config		server cluster
+crc16		server
+crc64		NULL
+db		server cluster atomicvar
+debug		server sha1 crc64 bio 
+debugmacro	NULL
+defrag		server
+dict		fmacros zmalloc redisassert
+endianconv	config
+evict		server bio atomicvar
+expire		server
+fmacros		NULL
+geo		geohash_helper debugmacro
+geohash		NULL
+geohash_helper	fmacros debugmacro geohash
+help		NULL
+hyperloglog	server
+intset		zmalloc endianconv
+latency		server
+lazyfree	server bio atomicvar cluster
+listpack	listpack_malloc
+listpack_malloc	zmalloc
+localtime	NULL
+lolwut		server
+lolwut5		server
+lzf		NULL
+lzf_c		lzfP
+lzf_d		lzfP
+lzfP		lzf
+memtest		config
+mkreleasehdr	NULL
+module		server cluster redismodule
+multi		server
+networking	server atomicvar
+notify		server
+object		server
+pqsort		NULL
+pubsub		server
+quicklist	zmalloc ziplist util lzf
+rand		NULL
+rax		rax_malloc
+rax_malloc	zmalloc
+rdb		server lzf zipmap endianconv stream rio 
+redisassert	NULL
+redis-benchmark fmacros ae hiredis adlist zmalloc
+redis-check-aof	server
+redis-check-rdb	server rdb
+redis-cli	fmacros version dict adlist zmalloc linenoise help anet ae
+redismodule	NULL
+release		version crc64
+replication	server
+rio		fmacros rio util crc64 config server sds
+scripting	server sha1 rand cluster 
+sds		sdsalloc
+sdsalloc	zmalloc
+sentinel	server hiredis async
+server		cluster slowlog bio latency atomicvar fmacros config solarisfixes rio ae sds dict adlist zmalloc anet ziplist intset version util latency sparkline quicklist rax zipmap sha1 endianconv crc64
+setproctitle	NULL
+sha1		solarisfixes config
+siphash		NULL
+slowlog		server 
+solarisfixes	NULL
+sort		server pqsort
+sparkline	server 
+stream		rax listpack 
+syncio		server 
+t_hash		server
+t_list		server
+t_set		server
+t_stream	server endianconv stream
+t_string	server
+t_zset		server
+testhelp	NULL
+util		fmacros sha1 sds
+version		NULL
+ziplist		zmalloc util ziplist endianconv redisassert
+zipmap		zmalloc endianconv
+zmalloc		config atomicvar
+
+
+
+modules
+zmalloc		NULL
+helloblock	../redismodule
+hellocluster	../redismodule
+hellodict	../redismodule
+hellotimer	../redismodule
+hellotype	../redismodule
+helloworld	../redismodule
+testmodule	../redismodule
