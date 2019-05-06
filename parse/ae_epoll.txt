@@ -1,0 +1,33 @@
+/*
+//可以看https://www.cnblogs.com/lojunren/p/3856290.html、http://man7.org/linux/man-pages/man7/epoll.7.html
+以及http://blog.chinaunix.net/uid-28541347-id-4273856.html了解epoll
+
+linux epoll(2)
+
+*/
+
+
+
+
+
+
+
+/*
+作用:
+epoll I/O事件通知工具
+头文件:
+sys/epoll.h
+描述:
+epoll API接口和poll类似，用来监控多文件描述符来查看是否能够在其上能够进行I/O操作,epoll也能被用作边缘触发接口或电平触发接
+口，能够很好的兼容大量被监控文件描述符。
+
+epoll API的核心理念是epoll实例，一个内核数据结构，从用户层面来看，能够被认为是两个list的容器:
+1. The interest list(epoll set):为文件描述符的集合，该描述符已经在进程中注册和监控
+2. The ready list:已经准备好做I/O操作的文件描述符的集合。The ready list是The interest list的子集，动态位于内核中，作为活动的
+I/O文件描述符。
+
+下面的系统调用用来创建和管理一个epoll实例
+epoll_create 创建一个新的epoll实例，并返回一个文件描述符(指向该实例)
+epoll_ctl 将特定的文件描述符放到epoll实例的interest列表中
+epoll_wait 等待I/O事件，
+*/
