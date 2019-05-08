@@ -23,8 +23,7 @@ epoll API接口和poll类似，用来监控多文件描述符来查看是否能够在其上能够进行I/O操作
 
 epoll API的核心理念是epoll实例，一个内核数据结构，从用户层面来看，能够被认为是两个list的容器:
 1. The interest list(epoll set):为文件描述符的集合，该描述符已经在进程中注册和监控
-2. The ready list:已经准备好做I/O操作的文件描述符的集合。The ready list是The interest list的子集，动态位于内核中，作为活动的
-I/O文件描述符。
+2. The ready list:已经准备好做I/O操作的文件描述符的集合。The ready list是The interest list的子集，动态位于内核中，作为活动的I/O文件描述符。
 
 下面的系统调用用来创建和管理一个epoll实例
 epoll_create 创建一个新的epoll实例，并返回一个文件描述符(指向该实例)
@@ -39,15 +38,24 @@ epoll事件分发接口能够处理边沿触发以及电平触发。这两种机制的差异如下所示。
 4. 管道读写者每次从rfd读取1KB的数据。
 5. 调用epoll_wait结束。
 
-如果rfd文件描述符已经使用EPOLLET标志添加到epoll实例中，当调用epoll_wait尽管可能还有数据在文件输入缓冲区中，在第五步的时候仍然可能被挂起，
-与此同时，远程对等机可能需要基于已发送数据的相应。原因是因为边缘出发模式只在受监视的文件描述符上发生更改时才会发布事件。所以在第五步，调用者
-可能最终会等待一些已经存在于输入缓冲区中的数据。在上面实例中，rfd上的事件生成只会因为第2步完成写入并且事件被第3步小韩。因为第4步中完成的读取操作不会
-消耗整个缓冲区的数据，在第五步中，对epoll_wait的调用可能会无限期的阻塞。
+如果rfd文件描述符已经使用EPOLLET标志添加到epoll实例中，当调用epoll_wait尽管可能还有数据在文件输入缓冲区中，在第五步的时候仍然可能被挂起，与此同时，远程对等机可能需要基于已发送数据的相应。原因是因为边缘出发模式只在受监视的文件描述符上发生更改时才会发布事件。所以在第五步，调用者可能最终会等待一些已经存在于输入缓冲区中的数据。在上面实例中，rfd上的事件生成只会因为第2步完成写入并且事件被第3步小韩。因为第4步中完成的读取操作不会消耗整个缓冲区的数据，在第五步中，对epoll_wait的调用可能会无限期的阻塞。
 
 使用EPOLLET标志的应用程序应使用非阻塞文件描述符来避免阻塞式的度或者写以免饿死同时处理多个文件描述符的任务。使用EPOLLET的建议如下所示。
 1. 使用非阻塞的文件描述符
 2. 只在读写之后等待事件返回
 
 相反，当使用电平触发接口时(默认),epoll相当于只是一个更快点的poll，并且能在任何地方使用。
+
+
+因为即使使用边沿触发的epoll，当接收多个数据块的时候也会生成多个事件，该调用函数有EPOLLONESHOT标志，来告诉epoll当接收epoll_wait的事件禁用接收文件描述符。当EPOLLONESHOT被设置时，利用EPOLL_CTL_MOD使用epoll_ctl来重新定义文件描述符。
+
+ If multiple threads (or processes, if child processes have inherited
+       the epoll file descriptor across fork(2)) are blocked in
+       epoll_wait(2) waiting on the same the same epoll file descriptor and
+       a file descriptor in the interest list that is marked for edge-
+       triggered (EPOLLET) notification becomes ready, just one of the
+       threads (or processes) is awoken from epoll_wait(2).  This provides a
+       useful optimization for avoiding "thundering herd" wake-ups in some
+       scenarios.
 
 */
